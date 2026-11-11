@@ -435,7 +435,7 @@ This needs a respring in order to enable/disable.
 			<key>label</key>
 			<string>SET TIMEOUTS</string>
 			<key>footerText</key>
-			<string>A respring is necesarry after changing 'Long Press Time'</string>
+			<string>A respring is necessary after changing 'Long Press Time'</string>
 		</dict>
 		<dict>
 			<key>cell</key>

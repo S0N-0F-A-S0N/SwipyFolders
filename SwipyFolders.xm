@@ -1584,7 +1584,7 @@ static NSMutableArray *oldFolderIDsAtBeginEditing;
 
 	if(!showedFirstTimeMessage) {
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"SwipyFolders"
-			message:@"Thanks for installing SwipyFolders! Default settings:\n First icon as folder preview\nSingle tap: opens the first app\nSwipe up: opens the folder\nThis all can be changed in the settings."
+			message:@"Thanks for installing SwipyFolders! Default settings:\nFirst icon as folder preview\nSingle tap: opens the first app\nSwipe up: opens the folder\nThis all can be changed in the settings."
 			delegate:nil
 			cancelButtonTitle:@"Cool!"
 			otherButtonTitles:nil];
