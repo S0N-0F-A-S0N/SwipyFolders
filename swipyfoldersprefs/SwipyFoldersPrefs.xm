@@ -71,7 +71,7 @@ static NSString * setCustomAppIndexTextForIndex(int number) {
             cell.separatorInset = UIEdgeInsetsMake(0, inset, 0, 0);
             cell.indentationWidth = -inset;
             cell.indentationLevel = 1;
-            cell.detailTextLabel.text = [NSString stringWithFormat:@"%.2lf", doubleTapTime];
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"%.2lfs", doubleTapTime];
 
         } else if ([identifier isEqualToString:@"longHoldTimeText"]) {
             double longHoldTime = ([preferences doubleForKey:@"longHoldTime"] == 0)? 0.2 : [preferences doubleForKey:@"longHoldTime"];
@@ -79,7 +79,7 @@ static NSString * setCustomAppIndexTextForIndex(int number) {
             cell.separatorInset = UIEdgeInsetsMake(0, inset, 0, 0);
             cell.indentationWidth = -inset;
             cell.indentationLevel = 1;
-            cell.detailTextLabel.text = [NSString stringWithFormat:@"%.2lf", longHoldTime];
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"%.2lfs", longHoldTime];
 
         } else if ([identifier isEqualToString:@"singleTapMethod"] || [identifier isEqualToString:@"swipeUpMethod"] || [identifier isEqualToString:@"swipeDownMethod"] || [identifier isEqualToString:@"doubleTapMethod"] || [identifier isEqualToString:@"shortHoldMethod"] || [identifier isEqualToString:@"longHoldMethod"] || [identifier isEqualToString:@"forceTouchMethod"]) {
 
@@ -111,7 +111,7 @@ static NSString * setCustomAppIndexTextForIndex(int number) {
     NSString *specifierId = [NSString stringWithFormat:@"%@Text", specifier.identifier];
 
     UITableViewCell *textCell = (UITableViewCell *)[self cachedCellForSpecifierID:specifierId];
-    textCell.detailTextLabel.text = [NSString stringWithFormat:@"%.2lf", slider.value];
+    textCell.detailTextLabel.text = [NSString stringWithFormat:@"%.2lfs", slider.value];
 
 }
 
@@ -344,7 +344,7 @@ static NSString * setCustomAppIndexTextForIndex(int number) {
     if([folderSettings[@"customFolderFunctionallity"] intValue] == 1 || [folderSettings[@"customFolderAppearance"] intValue] == 1) {
         cell.detailTextLabel.text = @"Enabled";
     } else {
-        cell.detailTextLabel.text = @"Not enabled";
+        cell.detailTextLabel.text = @"Disabled";
     }
     return cell;
 }
