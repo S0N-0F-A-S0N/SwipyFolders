@@ -1409,17 +1409,23 @@ static NSString *oldFolderID;
 
 %new - (NSIndexPath*)getFolderIndexPathForIndex:(int)index { //The beauty of long method names :P
 	long maxIconCountInList = MSHookIvar<long>(self, "_maxIconCountInLists");
+	return [self getFolderIndexPathForIndex:index withMaxIconCount:maxIconCountInList];
+}
+
+%new - (NSIndexPath*)getFolderIndexPathForIndex:(int)index withMaxIconCount:(long)maxIconCountInList {
 	int indexInList = index % maxIconCountInList;
 	int section = floor(index/maxIconCountInList);
 	return [NSIndexPath indexPathForRow:indexInList inSection:section];
 }
+
 
 //For the stupids who want nested folder support. I should get paid for it ;(
 %new - (int)getFirstAppIconIndex {
 	long maxIconCountInLists = MSHookIvar<long>(self, "_maxIconCountInLists");
 	int i = 0;
 	while(i <= (self.listCount * maxIconCountInLists)) {
-		NSIndexPath *indexPath = [self getFolderIndexPathForIndex:i];
+		// Optimize: pass maxIconCountInLists to avoid repeated MSHookIvar in loop
+		NSIndexPath *indexPath = [self getFolderIndexPathForIndex:i withMaxIconCount:maxIconCountInLists];
 		//SBApplicationIcon *icon = [self iconAtIndexPath:indexPath];
 		SBIcon *icon = (SBApplicationIcon*)[self iconAtIndexPath:indexPath];
 		if([icon respondsToSelector:@selector(application)]) {
@@ -1467,18 +1473,18 @@ static NSString *oldFolderID;
 	long maxIconCountInList = MSHookIvar<long>(self, "_maxIconCountInLists"); //9
 
 	int i = (iconList.count * maxIconCountInList) - maxIconCountInList; //Begin at the last page index
-	NSIndexPath *indexPath = [self getFolderIndexPathForIndex:0];
+	NSIndexPath *indexPath = [self getFolderIndexPathForIndex:0 withMaxIconCount:maxIconCountInList];
 
 	while(i <= (maxIconCountInList * iconList.count)) {
-		//SBApplicationIcon *icon = [self iconAtIndexPath: [self getFolderIndexPathForIndex:i]];
-		SBIcon *icon = (SBApplicationIcon*)[self iconAtIndexPath:[self getFolderIndexPathForIndex:i]];
+		// Optimize: pass maxIconCountInList to avoid repeated MSHookIvar in loop
+		SBIcon *icon = (SBApplicationIcon*)[self iconAtIndexPath:[self getFolderIndexPathForIndex:i withMaxIconCount:maxIconCountInList]];
 		if([icon respondsToSelector:@selector(application)]) {
 			if(icon.application.displayName != nil){ //&& ![icon isKindOfClass:%c(SBFolderIcon)]
-				indexPath = [self getFolderIndexPathForIndex:i];
+				indexPath = [self getFolderIndexPathForIndex:i withMaxIconCount:maxIconCountInList];
 			} else if([icon isKindOfClass:%c(SBLeafIcon)]){
 				SBLeafIcon *leafIcon = (SBLeafIcon*)icon;
 				if(leafIcon.leafIdentifier != nil) {
-					indexPath = [self getFolderIndexPathForIndex:i];
+					indexPath = [self getFolderIndexPathForIndex:i withMaxIconCount:maxIconCountInList];
 				}
 			}
 		}
@@ -1499,7 +1505,8 @@ static NSString *oldFolderID;
 		int i = [self getFirstAppIconIndex]+index;
 
 		while (i <= (maxIconCountInList * iconList.count)) {
-			NSIndexPath *indexPath = [self getFolderIndexPathForIndex:i];
+			// Optimize: pass maxIconCountInList to avoid repeated MSHookIvar in loop
+			NSIndexPath *indexPath = [self getFolderIndexPathForIndex:i withMaxIconCount:maxIconCountInList];
 			//SBApplicationIcon *icon = [self iconAtIndexPath:indexPath];
 			SBIcon *icon = (SBApplicationIcon*)[self iconAtIndexPath:indexPath];
 			if([icon respondsToSelector:@selector(application)]) {
